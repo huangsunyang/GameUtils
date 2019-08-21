@@ -42,22 +42,24 @@ def multi_source_lock(func):
 
 # +++++++++++++++++++ example +++++++++++++++++++
 
-@multi_source_lock
-def set_skill_enable(enabled):
-    """
-    设置技能是否可用的函数
-    """
-    pass
+class Player(object):
+    @multi_source_lock
+    def set_skill_enable(enabled):
+        """
+        设置技能是否可用的函数
+        """
+        pass
 
 
 class SkillForbidDebuff(object):
-    def __init__(self, no):
+    def __init__(self, player, no):
         self.no = no
+        self.target = player
 
     def on_add_state():
-        set_skill_enable(False, source=self.no)
+        self.target.set_skill_enable(False, source=self.no)
 
     def on_remove_state():
-        set_skill_enable(True, source=self.no)
+        self.target.set_skill_enable(True, source=self.no)
 
 # ------------------- example --------------------
